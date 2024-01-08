@@ -40,6 +40,9 @@
         },
         {
           "id": "c_backgroundColor"
+        },
+        {
+          "id": "serviceAreaPlaces"
         }
       ]
     },
@@ -182,19 +185,7 @@
         }
       ]
     },
-    {
-      "defaultCollapsed": true,
-      "displayName": "Enhanced Content Lists",
-      "entryType": "SECTION",
-      "fields": [
-        {
-          "id": "productLists"
-        },
-        {
-          "id": "bios"
-        }
-      ]
-    },
+
     {
       "defaultCollapsed": true,
       "displayName": "Additional Attributes",

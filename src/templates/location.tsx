@@ -1,16 +1,12 @@
-import * as React from "react";
 import {
   GetHeadConfig,
   GetPath,
-  GetRedirects,
   HeadConfig,
   Template,
   TemplateConfig,
   TemplateProps,
   TemplateRenderProps,
-  TransformProps,
 } from "@yext/pages";
-import { isProduction } from "@yext/pages/util";
 import "../index.css";
 import Favicon from "../assets/images/yext-favicon.ico";
 import About from "../components/About";
@@ -19,15 +15,14 @@ import Carousel from "../components/Carousel";
 import Hours from "../components/Hours";
 import PageLayout from "../components/PageLayout";
 import Schema from "../components/Schema";
-import ContactSection from "../components/ContactSection";
-
-
+import FAQs from "../components/FAQs";
+import FeaturedProducts from "../components/FeaturedProducts";
 
 export const config: TemplateConfig = {
   stream: {
     $id: "Location",
     filter: {
-      entityIds: [YEXT_PUBLIC_LOCATION_ENTITY_ID],
+      entityIds: ["calvins-coffee"],
     },
     fields: [
       "id",
@@ -35,6 +30,7 @@ export const config: TemplateConfig = {
       "meta",
       "name",
       "address",
+      "c_tagline",
       "mainPhone",
       "description",
       "hours",
@@ -45,30 +41,26 @@ export const config: TemplateConfig = {
       "paymentOptions",
       "emails",
       "yextDisplayCoordinate",
-      "c_backgroundColor"
+      "c_backgroundColor",
+      "c_faqs.question",
+      "c_faqs.answerV2",
+      "c_featuredProducts.name",
+      "c_featuredProducts.primaryPhoto",
+      "c_featuredProducts.richTextDescriptionV2",
     ],
     localization: {
-      locales: [YEXT_PUBLIC_LOCATION_LOCALE_CODE],
-      primary: false,
-    },
-    transform: {
-      replaceOptionValuesWithDisplayNames: [
-        "paymentOptions",
-        "c_backgroundColor"
-      ],
+      locales: ["en", "de"],
     },
   },
 };
 
-
 export const getPath: GetPath<TemplateProps> = ({ document }) => {
-  return document.slug ? document.slug : `index.html`;
+  return document.slug;
 };
-
 
 export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   document,
-  relativePrefixToRoot
+  relativePrefixToRoot,
 }): HeadConfig => {
   return {
     title: document.name,
@@ -86,7 +78,9 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
         type: "meta", // Meta Tag (og:image)
         attributes: {
           property: "og:image",
-          content: (document.photoGallery ? document.photoGallery[0].image.url : null),
+          content: document.photoGallery
+            ? document.photoGallery[0].image.url
+            : null,
         },
       },
       {
@@ -101,13 +95,8 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   };
 };
 
-
-
-const Location: Template<TemplateRenderProps> = ({
-  __meta,
-  relativePrefixToRoot,
-  document,
-}) => {
+// TODO: Core Business component (address, phone, email)
+const Location: Template<TemplateRenderProps> = ({ __meta, document }) => {
   const {
     name,
     address,
@@ -119,20 +108,24 @@ const Location: Template<TemplateRenderProps> = ({
     logo,
     photoGallery,
     yextDisplayCoordinate,
-    c_backgroundColor
+    c_backgroundColor,
+    c_featuredProducts,
+    c_faqs,
+    c_tagline,
   } = document;
 
-  const data = { mainPhone, emails, logo, c_backgroundColor }
+  const data = { mainPhone, emails, logo, c_backgroundColor };
 
   return (
     <>
       <Schema data={document} />
-      <PageLayout data={data} templateData={{__meta, document}}>
-        <Banner name={name} photoGallery={photoGallery} />
+      <PageLayout data={data} templateData={{ __meta, document }}>
+        <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
         {hours && <Hours title={"Hours"} hours={hours} />}
         <Carousel title={"Gallery"} photoGallery={photoGallery}></Carousel>
-        <ContactSection address={address} phone={mainPhone} email={emails} />
+        <FeaturedProducts products={c_featuredProducts} title={"Products"} />
+        <FAQs title={"FAQs"} faqs={c_faqs} />
       </PageLayout>
     </>
   );
