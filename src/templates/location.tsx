@@ -11,7 +11,6 @@ import "../index.css";
 import Favicon from "../assets/images/yext-favicon.ico";
 import About from "../components/About";
 import Banner from "../components/Banner";
-import Carousel from "../components/ImageCarousel";
 import Hours from "../components/Hours";
 import PageLayout from "../components/PageLayout";
 import Schema from "../components/Schema";
