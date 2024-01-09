@@ -123,7 +123,7 @@ const Location: Template<TemplateRenderProps> = ({ __meta, document }) => {
         <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
         {hours && <Hours title={"Hours"} hours={hours} />}
-        <Carousel title={"Gallery"} photoGallery={photoGallery}></Carousel>
+        <Carousel title={"Gallery"}></Carousel>
         <FeaturedProducts products={c_featuredProducts} title={"Products"} />
         <FAQs title={"FAQs"} faqs={c_faqs} />
       </PageLayout>
