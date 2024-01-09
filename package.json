@@ -17,6 +17,8 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
     "@radix-ui/react-slot": "^1.0.2",
+    "@yext/search-headless-react": "^2.4.0",
+    "@yext/search-ui-react": "^1.4.1",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
