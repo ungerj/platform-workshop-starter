@@ -1,13 +1,8 @@
-import { Image, ImageType, LexicalRichText } from "@yext/pages-components";
+import { Image, LexicalRichText } from "@yext/pages-components";
+import { C_featuredProducts } from "../types/autogen";
 
 export interface ProductCardProps {
-  product: {
-    primaryPhoto: ImageType;
-    name: string;
-    richTextDescriptionV2: {
-      json: Record<string, unknown>;
-    };
-  };
+  product: C_featuredProducts;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {

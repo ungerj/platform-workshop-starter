@@ -11,12 +11,14 @@ import "../index.css";
 import Favicon from "../assets/images/yext-favicon.ico";
 import About from "../components/About";
 import Banner from "../components/Banner";
-import Carousel from "../components/Carousel";
+import Carousel from "../components/ImageCarousel";
 import Hours from "../components/Hours";
 import PageLayout from "../components/PageLayout";
 import Schema from "../components/Schema";
 import FAQs from "../components/FAQs";
 import FeaturedProducts from "../components/FeaturedProducts";
+import ImageCarousel from "../components/ImageCarousel";
+import Location from "../types/autogen";
 
 export const config: TemplateConfig = {
   stream: {
@@ -96,7 +98,11 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
 };
 
 // TODO: Core Business component (address, phone, email)
-const Location: Template<TemplateRenderProps> = ({ __meta, document }) => {
+// TODO: Typing
+const Location: Template<TemplateRenderProps<Location>> = ({
+  __meta,
+  document,
+}) => {
   const {
     name,
     address,
@@ -123,7 +129,7 @@ const Location: Template<TemplateRenderProps> = ({ __meta, document }) => {
         <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
         {hours && <Hours title={"Hours"} hours={hours} />}
-        <Carousel title={"Gallery"}></Carousel>
+        <ImageCarousel title={"Gallery"} photoGallery={photoGallery} />
         <FeaturedProducts products={c_featuredProducts} title={"Products"} />
         <FAQs title={"FAQs"} faqs={c_faqs} />
       </PageLayout>

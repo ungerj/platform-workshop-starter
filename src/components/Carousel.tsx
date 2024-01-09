@@ -1,214 +1,257 @@
 import * as React from "react";
-import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Image } from "@yext/pages-components";
-import { useState, useCallback, useEffect } from "react";
-import { BiCaretRightCircle, BiCaretLeftCircle } from "react-icons/bi";
+import useEmblaCarousel, {
+  type EmblaCarouselType as CarouselApi,
+  type EmblaOptionsType as CarouselOptions,
+  type EmblaPluginType as CarouselPlugin,
+} from "embla-carousel-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export interface CarouselProps {
-  title?: string;
-  photoGallery?: any;
-}
+import { cn } from "../utils/cn";
+import { Button } from "./Button";
 
-interface ArrowProps {
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
-}
-
-const NextArrow = ({ className, style, onClick }: ArrowProps) => {
-  return (
-    <BiCaretRightCircle
-      className={className}
-      color="#000000"
-      style={{
-        ...style,
-        height: "50px",
-        width: "30px",
-      }}
-      onClick={onClick}
-    />
-  );
+type CarouselProps = {
+  opts?: CarouselOptions;
+  plugins?: CarouselPlugin[];
+  orientation?: "horizontal" | "vertical";
+  setApi?: (api: CarouselApi) => void;
 };
 
-const PrevArrow = ({ className, style, onClick }: ArrowProps) => {
-  return (
-    <BiCaretLeftCircle
-      style={{
-        ...style,
-        height: "50px",
-        width: "30px",
-        zIndex: 10,
-      }}
-      className={className}
-      color="#000000"
-      size={50}
-      onClick={onClick}
-    />
-  );
-};
+type CarouselContextProps = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0];
+  api: ReturnType<typeof useEmblaCarousel>[1];
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+} & CarouselProps;
 
-const Carousel = ({ title, photoGallery }: CarouselProps) => {
-  let dummyPhotos = [
-    {
-      test: true,
-      description: "Placeholder Image",
-      details: "Placeholder Image",
-      image: {
-        alternateText: "Placeholder Image",
-        height: 800,
-        url: "https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?fit=1200%2C800&ssl=1",
-        width: 1200,
-      },
-    },
-    {
-      test: true,
-      description: "Placeholder Image",
-      details: "Placeholder Image",
-      image: {
-        alternateText: "Placeholder Image",
-        height: 800,
-        url: "https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?fit=1200%2C800&ssl=1",
-        width: 1200,
-      },
-    },
-    {
-      test: true,
-      description: "Placeholder Image",
-      details: "Placeholder Image",
-      image: {
-        alternateText: "Placeholder Image",
-        height: 800,
-        url: "https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?fit=1200%2C800&ssl=1",
-        width: 1200,
-      },
-    },
-    {
-      test: true,
-      description: "Placeholder Image",
-      details: "Placeholder Image",
-      image: {
-        alternateText: "Placeholder Image",
-        height: 800,
-        url: "https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?fit=1200%2C800&ssl=1",
-        width: 1200,
-      },
-    },
-  ];
-  if (!photoGallery) {
-    photoGallery = dummyPhotos;
-  } else if (photoGallery.length < 3) {
-    photoGallery = photoGallery.concat(dummyPhotos);
+const CarouselContext = React.createContext<CarouselContextProps | null>(null);
+
+function useCarousel() {
+  const context = React.useContext(CarouselContext);
+
+  if (!context) {
+    throw new Error("useCarousel must be used within a <Carousel />");
   }
-  //   console.log("photo gallery array after manipulation");
-  //   console.log(photoGallery);
-  const photoDivs = photoGallery.map((e) => (
-    <div key={e.image.url} className="self-center hover:drop-shadow-lg sm:px-2">
-      <a href={e.image.url} target="_blank" rel="noreferrer">
-        <img src={e.image.url} className="rounded-md"></img>
 
-        {/* {e.test ? (
-          <img src={e.image.url} className="rounded-md"></img>
-        ) : (
-          <Image image={e.image} className="rounded-md" />
-        )} */}
-      </a>
-    </div>
-  ));
+  return context;
+}
 
-  const useMediaQuery = (width) => {
-    const [targetReached, setTargetReached] = useState(false);
+const Carousel = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & CarouselProps
+>(
+  (
+    {
+      orientation = "horizontal",
+      opts,
+      setApi,
+      plugins,
+      className,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const [carouselRef, api] = useEmblaCarousel(
+      {
+        ...opts,
+        axis: orientation === "horizontal" ? "x" : "y",
+      },
+      plugins
+    );
+    const [canScrollPrev, setCanScrollPrev] = React.useState(false);
+    const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-    const updateTarget = useCallback((e) => {
-      if (e.matches) {
-        setTargetReached(true);
-      } else {
-        setTargetReached(false);
+    const onSelect = React.useCallback((api: CarouselApi) => {
+      if (!api) {
+        return;
       }
+
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
     }, []);
 
-    useEffect(() => {
-      const media = window.matchMedia(`(max-width: ${width}px)`);
-      media.addEventListener("change", updateTarget);
+    const scrollPrev = React.useCallback(() => {
+      api?.scrollPrev();
+    }, [api]);
 
-      // Check on mount (callback is not called until a change occurs)
-      if (media.matches) {
-        setTargetReached(true);
+    const scrollNext = React.useCallback(() => {
+      api?.scrollNext();
+    }, [api]);
+
+    const handleKeyDown = React.useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          scrollPrev();
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          scrollNext();
+        }
+      },
+      [scrollPrev, scrollNext]
+    );
+
+    React.useEffect(() => {
+      if (!api || !setApi) {
+        return;
       }
 
-      return () => media.removeEventListener("change", updateTarget);
-    }, []);
+      setApi(api);
+    }, [api, setApi]);
 
-    return targetReached;
-  };
+    React.useEffect(() => {
+      if (!api) {
+        return;
+      }
 
-  const settings: Settings = {
-    dots: true,
-    arrows: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    lazyLoad: true,
-    swipeToSlide: false,
-    prevArrow: <PrevArrow className="" />,
-    nextArrow: <NextArrow className="" />,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          swipeToSlide: true,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          swipeToSlide: true,
-          arrows: false,
-        },
-      },
-    ],
-  };
+      onSelect(api);
+      api.on("reInit", onSelect);
+      api.on("select", onSelect);
 
-  const isBreakpoint = useMediaQuery(768);
-  // @ts-ignore
-  const SliderComponent =
-    typeof window === "undefined" ? Slider.default : Slider;
-  return (
-    <>
-      <div className="mx-auto px-5 md:px-14 bg-gray-100 pt-8 pb-24">
-        <h2 className="section text-3xl text-center tracking-tight font-bold">
-          <a id="gallery">{title}</a>
-        </h2>
-        <SliderComponent
-          {...settings}
-          className="drop-shadow sm:px-3 sm:mx-3  md:px-5"
+      return () => {
+        api?.off("select", onSelect);
+      };
+    }, [api, onSelect]);
+
+    return (
+      <CarouselContext.Provider
+        value={{
+          carouselRef,
+          api: api,
+          opts,
+          orientation:
+            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+          scrollPrev,
+          scrollNext,
+          canScrollPrev,
+          canScrollNext,
+        }}
+      >
+        <div
+          ref={ref}
+          onKeyDownCapture={handleKeyDown}
+          className={cn("relative", className)}
+          role="region"
+          aria-roledescription="carousel"
+          {...props}
         >
-          {photoDivs}
-        </SliderComponent>
-      </div>
-    </>
-  );
-};
+          {children}
+        </div>
+      </CarouselContext.Provider>
+    );
+  }
+);
+Carousel.displayName = "Carousel";
 
-export default Carousel;
+const CarouselContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const { carouselRef, orientation } = useCarousel();
+
+  return (
+    <div ref={carouselRef} className="overflow-hidden">
+      <div
+        ref={ref}
+        className={cn(
+          "flex",
+          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          className
+        )}
+        {...props}
+      />
+    </div>
+  );
+});
+CarouselContent.displayName = "CarouselContent";
+
+const CarouselItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const { orientation } = useCarousel();
+
+  return (
+    <div
+      ref={ref}
+      role="group"
+      aria-roledescription="slide"
+      className={cn(
+        "min-w-0 shrink-0 grow-0 basis-full",
+        orientation === "horizontal" ? "pl-4" : "pt-4",
+        className
+      )}
+      {...props}
+    />
+  );
+});
+CarouselItem.displayName = "CarouselItem";
+
+const CarouselPrevious = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+
+  return (
+    <Button
+      ref={ref}
+      variant={variant}
+      size={size}
+      className={cn(
+        "absolute  h-8 w-8 rounded-full",
+        orientation === "horizontal"
+          ? "-left-12 top-1/2 -translate-y-1/2"
+          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
+      disabled={!canScrollPrev}
+      onClick={scrollPrev}
+      {...props}
+    >
+      <ArrowLeft className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
+    </Button>
+  );
+});
+CarouselPrevious.displayName = "CarouselPrevious";
+
+const CarouselNext = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  const { orientation, scrollNext, canScrollNext } = useCarousel();
+
+  return (
+    <Button
+      ref={ref}
+      variant={variant}
+      size={size}
+      className={cn(
+        "absolute h-8 w-8 rounded-full",
+        orientation === "horizontal"
+          ? "-right-12 top-1/2 -translate-y-1/2"
+          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
+      disabled={!canScrollNext}
+      onClick={scrollNext}
+      {...props}
+    >
+      <ArrowRight className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+});
+CarouselNext.displayName = "CarouselNext";
+
+export {
+  type CarouselApi,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+};

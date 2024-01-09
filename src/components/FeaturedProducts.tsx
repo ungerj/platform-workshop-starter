@@ -1,8 +1,9 @@
+import { C_featuredProducts } from "../types/autogen";
 import ProductCard from "./ProductCard";
 
 export interface FeaturedProductProps {
   title: string;
-  products: ProfileType[];
+  products: C_featuredProducts[];
   itemsToShow?: number;
 }
 
