@@ -137,11 +137,11 @@ const Location: Template<TemplateRenderProps<Location>> = ({
       <PageLayout data={data} templateData={{ __meta, document }}>
         <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
-        {/* <BusinessSummary
+        <BusinessSummary
           address={address}
           mainPhone={mainPhone}
           hours={hours}
-        /> */}
+        />
         <ImageCarousel title={t("Gallery")} photoGallery={photoGallery} />
         <FeaturedProducts products={c_featuredProducts} title={t("Products")} />
         <FAQs title={t("FAQs")} faqs={c_faqs} />
