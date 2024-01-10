@@ -120,7 +120,7 @@ const Location: Template<TemplateRenderProps<Location>> = ({
     meta,
   } = document;
 
-  const data = { mainPhone, emails, logo, c_backgroundColor };
+  const data = { locale: document.meta.locale };
   const { t } = useTranslation();
 
   // you would usually derive the locale from the browser or user for hardcoded locales, but this example is for demo purposes

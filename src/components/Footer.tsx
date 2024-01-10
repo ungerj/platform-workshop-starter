@@ -68,35 +68,40 @@ const navigation = {
   ],
 };
 
-const Footer = ( { paragraph }: FooterProps) => {
-
+const Footer = ({ paragraph }: FooterProps) => {
   return (
-      <footer className="" style={{background: `var(--backgroundColor)`}}>
+    <footer
+      className="mt-auto"
+      style={{ background: `var(--backgroundColor)` }}
+    >
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-        <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+        <nav
+          className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
+          aria-label="Footer"
+        >
           {navigation.company.map((item) => (
             <div key={item.name}>
-              <Link 
+              <Link
                 href={item.href}
                 className="pb-6 text-sm leading-6 text-gray-600 hover:text-gray-900"
                 eventName={`cta Click_${item.name}`}
-                >
-                  {item.name}
+              >
+                {item.name}
               </Link>
             </div>
           ))}
         </nav>
         <div className="mt-10 flex justify-center space-x-10">
           {navigation.social.map((item) => (
-              <Link 
-                href={item.href}
-                key={item.name}
-                className="text-gray-400 hover:text-gray-500"
-                eventName={`cta Click_${item.name}`}
-                >
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
-              </Link>
+            <Link
+              href={item.href}
+              key={item.name}
+              className="text-gray-400 hover:text-gray-500"
+              eventName={`cta Click_${item.name}`}
+            >
+              <span className="sr-only">{item.name}</span>
+              <item.icon className="h-6 w-6" aria-hidden="true" />
+            </Link>
           ))}
         </div>
         <p className="mt-10 text-center text-xs leading-5 text-gray-500">

@@ -209,3 +209,8 @@ export default interface Location {
   c_featuredProducts: C_featuredProducts[];
   c_faqs: C_faqs[];
 }
+
+export interface Product {
+  name: string;
+  primaryPhoto: ComplexImage;
+}
