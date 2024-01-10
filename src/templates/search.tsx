@@ -17,6 +17,9 @@ import PageLayout from "../components/PageLayout";
 import { useSearchActions } from "@yext/search-headless-react";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
+import { FAQCard } from "../components/search/FAQCard";
+import { ProductCard } from "../components/search/ProductCard";
+import ProductSection from "../components/search/ProductSection";
 
 export const getPath: GetPath<TemplateProps> = () => {
   return "search";
@@ -79,7 +82,16 @@ export const SearchInner: React.FC = () => {
     <div className="px-4 py-8">
       <div className="mx-auto flex max-w-5xl flex-col">
         <SearchBar placeholder={placeHolderText} onSearch={handleSearch} />
-        <UniversalResults verticalConfigMap={{ faqs: { label: "FAQs" } }} />
+        <UniversalResults
+          verticalConfigMap={{
+            faqs: { label: "FAQs", CardComponent: FAQCard },
+            products: {
+              label: "Products",
+              CardComponent: ProductCard,
+              SectionComponent: ProductSection,
+            },
+          }}
+        />
       </div>
     </div>
   );
