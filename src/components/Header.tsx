@@ -14,10 +14,8 @@ const Header = ({ data }: HeaderProps) => {
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
     const currentPath = window.location.pathname;
-    // Ensure there's no trailing slash
-    const trimmedPath = currentPath.endsWith("/")
-      ? currentPath.slice(0, -1)
-      : currentPath;
+    // Remove "/index.html" if it exists in the path
+    const trimmedPath = currentPath.replace("/index.html", "");
     // Construct the new URL
     const newUrl = `${trimmedPath}/search?query=${encodeURIComponent(
       query || ""
