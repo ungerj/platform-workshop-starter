@@ -20,22 +20,36 @@ export interface PageLayoutProps {
 }
 
 const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
-  const locale = templateData.document?.meta?.locale;
+  // set locale based on the locale provided by the pages system
+  const [locale, setLocale] = React.useState(
+    templateData.document?.meta?.locale
+  );
+
+  console.log(locale);
+
+  // update locale if locale query param is provided for search
+  React.useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const localeParam = searchParams.get("locale");
+    if (localeParam) {
+      setLocale(localeParam);
+    }
+  }, []);
+
   const searchConfig: HeadlessConfig = {
     apiKey: "e3377abbf6e20d714caa16c4c4eb7007",
     experienceKey: "calvins-coffee-search",
-    locale: locale ?? "en",
+    locale: locale,
     experienceVersion: "STAGING",
     environment: Environment.SANDBOX,
   };
-
   const searcher = provideHeadless(searchConfig);
 
   return (
     <>
       <SearchHeadlessProvider searcher={searcher}>
         <AnalyticsProvider templateData={templateData}>
-          <div className="min-h-screen">
+          <div className="min-h-screen flex flex-col">
             <AnalyticsScopeProvider name="header">
               <Header data={data} />
             </AnalyticsScopeProvider>

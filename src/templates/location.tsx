@@ -120,10 +120,6 @@ const Location: Template<TemplateRenderProps<Location>> = ({
   } = document;
 
   const data = {
-    mainPhone,
-    emails,
-    logo,
-    c_backgroundColor,
     locale: document.meta.locale,
   };
 
