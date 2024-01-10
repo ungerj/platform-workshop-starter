@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link, Address } from "@yext/pages-components";
+import { Link, Address, Hours } from "@yext/pages-components";
 import { FaPhone, FaEnvelope } from "react-icons/fa";
 
 import { Address as AddressType, Hours as HoursType } from "../types/autogen";
