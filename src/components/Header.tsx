@@ -1,17 +1,21 @@
 import * as React from "react";
 import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
+import { useTranslation } from "react-i18next";
 
 export interface HeaderProps {
   data?: {
-    locale: string;
+    locale?: string;
+    path?: string;
   };
 }
 
 const Header = ({ data }: HeaderProps) => {
+  const { t } = useTranslation();
+  const placeHolderText = t("Search...");
   const locale = data?.locale;
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    window.location.href = `/search?query=${query}&lang=de`;
+    window.location.href = `/search?query=${query}&lang=${locale}`;
   };
 
   return (
@@ -30,13 +34,15 @@ const Header = ({ data }: HeaderProps) => {
             />
           </a>
         </div>
-        <SearchBar
-          onSearch={handleSearch}
-          customCssClasses={{
-            searchBarContainer: "mb-0 w-3/4 md:w-1/3",
-          }}
-          placeholder={locale == "de" ? "Suchen..." : "Search..."}
-        />
+        {data?.path !== "search" && (
+          <SearchBar
+            onSearch={handleSearch}
+            customCssClasses={{
+              searchBarContainer: "mb-0 w-3/4 md:w-1/3",
+            }}
+            placeholder={placeHolderText}
+          />
+        )}
       </nav>
     </header>
   );

@@ -39,7 +39,7 @@ const Search: Template<TemplateRenderProps> = ({ __meta, document }) => {
     }
   }, []);
   return (
-    <PageLayout data={{}} templateData={{ __meta, document }}>
+    <PageLayout data={{ path: "search" }} templateData={{ __meta, document }}>
       <SearchInner />
     </PageLayout>
   );

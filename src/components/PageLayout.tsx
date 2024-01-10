@@ -12,6 +12,8 @@ import {
   SearchHeadlessProvider,
   provideHeadless,
 } from "@yext/search-headless-react";
+import { getRuntime } from "@yext/pages/util";
+import i18n from "../i18n";
 
 export interface PageLayoutProps {
   children?: React.ReactNode;
@@ -21,8 +23,12 @@ export interface PageLayoutProps {
 
 const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
   // set locale based on the locale provided by the pages system
+  const runtime = getRuntime();
   let locale = templateData.document?.meta?.locale;
-  if (typeof window !== "undefined") {
+  if (locale !== "en") {
+    i18n.changeLanguage("de");
+  }
+  if (!runtime.isServerSide) {
     const searchParams = new URLSearchParams(window?.location.search);
     const localeParam = searchParams.get("lang");
     locale = localeParam;
