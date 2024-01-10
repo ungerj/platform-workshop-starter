@@ -11,13 +11,16 @@ import "../index.css";
 import Favicon from "../assets/images/yext-favicon.ico";
 import About from "../components/About";
 import Banner from "../components/Banner";
-import Hours from "../components/Hours";
 import PageLayout from "../components/PageLayout";
 import Schema from "../components/Schema";
 import FAQs from "../components/FAQs";
 import FeaturedProducts from "../components/FeaturedProducts";
 import ImageCarousel from "../components/ImageCarousel";
 import Location from "../types/autogen";
+import BusinessSummary from "../components/BusinessSummary";
+import { useEffect } from "react";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 export const config: TemplateConfig = {
   stream: {
@@ -96,7 +99,6 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   };
 };
 
-// TODO: Core Business component (address, phone, email)
 // TODO: Typing
 const Location: Template<TemplateRenderProps<Location>> = ({
   __meta,
@@ -107,21 +109,27 @@ const Location: Template<TemplateRenderProps<Location>> = ({
     address,
     hours,
     mainPhone,
-    services,
     description,
     emails,
     logo,
     photoGallery,
-    yextDisplayCoordinate,
     c_backgroundColor,
     c_featuredProducts,
     c_faqs,
     c_tagline,
+    meta,
   } = document;
 
-  const data = {
-    locale: document.meta.locale,
-  };
+  const data = { mainPhone, emails, logo, c_backgroundColor };
+  const { t } = useTranslation();
+
+  // you would usually derive the locale from the browser or user for hardcoded locales, but this example is for demo purposes
+  // you could also choose to store all the site copy in Yext Content and translate it there
+  useEffect(() => {
+    if (meta.locale !== "en") {
+      i18n.changeLanguage("de");
+    }
+  }, []);
 
   return (
     <>
@@ -129,10 +137,14 @@ const Location: Template<TemplateRenderProps<Location>> = ({
       <PageLayout data={data} templateData={{ __meta, document }}>
         <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
-        {hours && <Hours title={"Hours"} hours={hours} />}
-        <ImageCarousel title={"Gallery"} photoGallery={photoGallery} />
-        <FeaturedProducts products={c_featuredProducts} title={"Products"} />
-        <FAQs title={"FAQs"} faqs={c_faqs} />
+        <BusinessSummary
+          address={address}
+          mainPhone={mainPhone}
+          hours={hours}
+        />
+        <ImageCarousel title={t("Gallery")} photoGallery={photoGallery} />
+        <FeaturedProducts products={c_featuredProducts} title={t("Products")} />
+        <FAQs title={t("FAQs")} faqs={c_faqs} />
       </PageLayout>
     </>
   );

@@ -1,13 +1,13 @@
 export interface Address {
-  line1?: string;
+  line1: string;
   line2?: string;
   line3?: string;
   sublocality?: string;
-  city?: string;
+  city: string;
   region?: string;
-  postalCode?: string;
+  postalCode: string;
   extraDescription?: string;
-  countryCode?: string;
+  countryCode: string;
 }
 
 export interface Interval {
@@ -181,8 +181,8 @@ export interface C_featuredProducts {
 }
 
 export interface C_faqs {
-  question?: string;
-  answerV2?: any;
+  question: string;
+  answerV2: any;
 }
 
 export default interface Location {
