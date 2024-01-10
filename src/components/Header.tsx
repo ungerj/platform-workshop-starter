@@ -9,17 +9,17 @@ export interface HeaderProps {
 }
 
 const Header = ({ data }: HeaderProps) => {
-  const { t } = useTranslation();
-  const placeHolderText = t("Search...");
-  const handleSearch: onSearchFunc = (searchEventData) => {
-    const { query } = searchEventData;
-    // Construct the new URL
-    const newUrl =
-      data?.locale === "en"
-        ? `/search?query=${encodeURIComponent(query || "")}`
-        : `/${data?.locale}/search?query=${encodeURIComponent(query || "")}`;
-    window.location.href = newUrl;
-  };
+  // const { t } = useTranslation();
+  // const placeHolderText = t("Search...");
+  // const handleSearch: onSearchFunc = (searchEventData) => {
+  //   const { query } = searchEventData;
+  //   // Construct the new URL
+  //   const newUrl =
+  //     data?.locale === "en"
+  //       ? `/search?query=${encodeURIComponent(query || "")}`
+  //       : `/${data?.locale}/search?query=${encodeURIComponent(query || "")}`;
+  //   window.location.href = newUrl;
+  // };
 
   return (
     <header className="" style={{ background: `var(--backgroundColor)` }}>
@@ -37,7 +37,7 @@ const Header = ({ data }: HeaderProps) => {
             />
           </a>
         </div>
-        {data?.path !== "search" && (
+        {/* {data?.path !== "search" && (
           <SearchBar
             onSearch={handleSearch}
             customCssClasses={{
@@ -45,7 +45,7 @@ const Header = ({ data }: HeaderProps) => {
             }}
             placeholder={placeHolderText}
           />
-        )}
+        )} */}
       </nav>
     </header>
   );
