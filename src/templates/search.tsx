@@ -85,11 +85,11 @@ export const SearchInner: React.FC = () => {
         <UniversalResults
           verticalConfigMap={{
             faqs: { label: "FAQs", CardComponent: FAQCard },
-            products: {
-              label: "Products",
-              CardComponent: ProductCard,
-              SectionComponent: ProductSection,
-            },
+            // products: {
+            //   label: "Products",
+            //   CardComponent: ProductCard,
+            //   SectionComponent: ProductSection,
+            // },
           }}
         />
       </div>
