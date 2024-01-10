@@ -16,8 +16,8 @@ import {
 import PageLayout from "../components/PageLayout";
 import { useSearchActions } from "@yext/search-headless-react";
 import { useTranslation } from "react-i18next";
-import { FAQCard } from "../components/search/FAQCard";
 import { useEffect } from "react";
+import { FAQCard } from "../components/search/FaqCard";
 
 export const config: TemplateConfig = {
   stream: {
