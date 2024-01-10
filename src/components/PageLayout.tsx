@@ -21,20 +21,12 @@ export interface PageLayoutProps {
 
 const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
   // set locale based on the locale provided by the pages system
-  const [locale, setLocale] = React.useState(
-    templateData.document?.meta?.locale
-  );
-
-  console.log(locale);
-
-  // update locale if locale query param is provided for search
-  React.useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const localeParam = searchParams.get("locale");
-    if (localeParam) {
-      setLocale(localeParam);
-    }
-  }, []);
+  let locale = templateData.document?.meta?.locale;
+  if (typeof window !== "undefined") {
+    const searchParams = new URLSearchParams(window?.location.search);
+    const localeParam = searchParams.get("lang");
+    locale = localeParam;
+  }
 
   const searchConfig: HeadlessConfig = {
     apiKey: "e3377abbf6e20d714caa16c4c4eb7007",

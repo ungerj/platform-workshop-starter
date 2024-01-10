@@ -120,7 +120,7 @@ const Location: Template<TemplateRenderProps<Location>> = ({
     meta,
   } = document;
 
-  const data = { mainPhone, emails, logo, c_backgroundColor };
+  const data = { locale: document.meta.locale };
   const { t } = useTranslation();
 
   // you would usually derive the locale from the browser or user for hardcoded locales, but this example is for demo purposes
@@ -137,11 +137,11 @@ const Location: Template<TemplateRenderProps<Location>> = ({
       <PageLayout data={data} templateData={{ __meta, document }}>
         <Banner name={name} tagline={c_tagline} photoGallery={photoGallery} />
         <About description={description} />
-        <BusinessSummary
+        {/* <BusinessSummary
           address={address}
           mainPhone={mainPhone}
           hours={hours}
-        />
+        /> */}
         <ImageCarousel title={t("Gallery")} photoGallery={photoGallery} />
         <FeaturedProducts products={c_featuredProducts} title={t("Products")} />
         <FAQs title={t("FAQs")} faqs={c_faqs} />

@@ -1,11 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { formatPhoneNumber } from "react-phone-number-input";
-import { Image } from "@yext/pages-components";
-import { Link } from "@yext/pages-components";
-import { useSearchActions } from "@yext/search-headless-react";
 import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
 
 export interface HeaderProps {
@@ -18,7 +11,7 @@ const Header = ({ data }: HeaderProps) => {
   const locale = data?.locale;
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    window.location.href = `/search?query=${query}&locale=${locale}`;
+    window.location.href = `/search?query=${query}&lang=de`;
   };
 
   return (

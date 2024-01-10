@@ -56,6 +56,7 @@ export const SearchInner: React.FC = () => {
 
   //hook to execute a search if necessary based on the query param in the url
   React.useEffect(() => {
+    console.log("executing search");
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("query");
     if (query) {
@@ -67,7 +68,7 @@ export const SearchInner: React.FC = () => {
   return (
     <div className="px-4 py-8">
       <div className="mx-auto flex max-w-5xl flex-col">
-        <SearchBar placeholder="Search..." onSearch={handleSearch} />
+        {/* <SearchBar placeholder="Search..." onSearch={handleSearch} /> */}
         <UniversalResults verticalConfigMap={{ faqs: { label: "FAQs" } }} />
       </div>
     </div>
