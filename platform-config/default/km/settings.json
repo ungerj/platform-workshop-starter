@@ -49,6 +49,11 @@
       "disabled": true
     },
     {
+      "entityType": "ce_page",
+      "defaultFieldEligibilityGroup": "ce_page.default",
+      "disabled": false
+    },
+    {
       "entityType": "helpArticle",
       "disabled": true
     },
