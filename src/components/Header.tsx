@@ -13,13 +13,11 @@ const Header = ({ data }: HeaderProps) => {
   const placeHolderText = t("Search...");
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    const currentPath = window.location.pathname;
-    // Remove "/index.html" if it exists in the path
-    const trimmedPath = currentPath.replace("/index.html", "");
     // Construct the new URL
-    const newUrl = `${trimmedPath}/search?query=${encodeURIComponent(
-      query || ""
-    )}`;
+    const newUrl =
+      data?.locale === "en"
+        ? `/search?query=${encodeURIComponent(query || "")}`
+        : `/${data?.locale}/search?query=${encodeURIComponent(query || "")}`;
     window.location.href = newUrl;
   };
 
