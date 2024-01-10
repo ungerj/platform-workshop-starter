@@ -35,19 +35,19 @@ const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
 
   return (
     <>
-      {/* <SearchHeadlessProvider searcher={searcher}> */}
-      <AnalyticsProvider templateData={templateData}>
-        <div className="min-h-screen flex flex-col">
-          <AnalyticsScopeProvider name="header">
-            <Header data={data} />
-          </AnalyticsScopeProvider>
-          {children}
-          <AnalyticsScopeProvider name="footer">
-            <Footer />
-          </AnalyticsScopeProvider>
-        </div>
-      </AnalyticsProvider>
-      {/* </SearchHeadlessProvider> */}
+      <SearchHeadlessProvider searcher={searcher}>
+        <AnalyticsProvider templateData={templateData}>
+          <div className="min-h-screen flex flex-col">
+            <AnalyticsScopeProvider name="header">
+              <Header data={data} />
+            </AnalyticsScopeProvider>
+            {children}
+            <AnalyticsScopeProvider name="footer">
+              <Footer />
+            </AnalyticsScopeProvider>
+          </div>
+        </AnalyticsProvider>
+      </SearchHeadlessProvider>
     </>
   );
 };
