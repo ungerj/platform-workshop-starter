@@ -21,6 +21,7 @@
     },
     {
       "entityType": "faq",
+      "defaultFieldEligibilityGroup": "faq.default",
       "disabled": false
     },
     {
@@ -53,6 +54,7 @@
     },
     {
       "entityType": "product",
+      "defaultFieldEligibilityGroup": "product.default",
       "disabled": false
     },
     {

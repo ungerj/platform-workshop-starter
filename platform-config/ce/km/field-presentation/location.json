@@ -91,6 +91,9 @@
         },
         {
           "id": "featuredMessage"
+        },
+        {
+          "id": "c_tagline"
         }
       ]
     },
@@ -185,7 +188,6 @@
         }
       ]
     },
-
     {
       "defaultCollapsed": true,
       "displayName": "Additional Attributes",
@@ -320,13 +322,7 @@
           "id": "appleCompanyId"
         },
         {
-          "id": "appleCompanyIdDqe"
-        },
-        {
           "id": "appleBusinessId"
-        },
-        {
-          "id": "appleBusinessIdDqe"
         },
         {
           "id": "appleBusinessDescription"
