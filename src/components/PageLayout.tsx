@@ -24,14 +24,14 @@ const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
 
   initi18n(locale);
 
-  // const searchConfig: HeadlessConfig = {
-  //   apiKey: "e3377abbf6e20d714caa16c4c4eb7007",
-  //   experienceKey: "calvins-coffee-search",
-  //   locale,
-  //   experienceVersion: "STAGING",
-  //   environment: Environment.SANDBOX,
-  // };
-  // const searcher = provideHeadless(searchConfig);
+  const searchConfig: HeadlessConfig = {
+    apiKey: "e3377abbf6e20d714caa16c4c4eb7007",
+    experienceKey: "calvins-coffee-search",
+    locale,
+    experienceVersion: "STAGING",
+    environment: Environment.SANDBOX,
+  };
+  const searcher = provideHeadless(searchConfig);
 
   return (
     <>
