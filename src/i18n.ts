@@ -12,13 +12,15 @@ const resources = {
   },
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "en", // Default language
-  keySeparator: false, // We do not use keys in form messages.welcome
-  interpolation: {
-    escapeValue: false, // React already safes from XSS
-  },
-});
+export const initi18n = (locale: string) => {
+  i18n.use(initReactI18next).init({
+    resources,
+    keySeparator: false,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+  i18n.changeLanguage(locale);
+};
 
 export default i18n;

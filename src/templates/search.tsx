@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Template,
   GetPath,
@@ -6,6 +5,7 @@ import {
   GetHeadConfig,
   HeadConfig,
   TemplateProps,
+  TemplateConfig,
 } from "@yext/pages";
 import "../index.css";
 import {
@@ -15,14 +15,25 @@ import {
 } from "@yext/search-ui-react";
 import PageLayout from "../components/PageLayout";
 import { useSearchActions } from "@yext/search-headless-react";
-import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
 import { FAQCard } from "../components/search/FAQCard";
-import { ProductCard } from "../components/search/ProductCard";
-import ProductSection from "../components/search/ProductSection";
+import { useEffect } from "react";
 
-export const getPath: GetPath<TemplateProps> = () => {
-  return "search";
+export const config: TemplateConfig = {
+  stream: {
+    $id: "Search",
+    filter: {
+      entityIds: ["search-results"],
+    },
+    fields: ["id", "uid", "meta", "name", "slug"],
+    localization: {
+      locales: ["en", "de"],
+    },
+  },
+};
+
+export const getPath: GetPath<TemplateProps> = ({ document }) => {
+  return document.slug;
 };
 
 export const getHeadConfig: GetHeadConfig<
@@ -36,11 +47,6 @@ export const getHeadConfig: GetHeadConfig<
 };
 
 const Search: Template<TemplateRenderProps> = ({ __meta, document }) => {
-  React.useEffect(() => {
-    if (document.meta.locale !== "en") {
-      i18n.changeLanguage("de");
-    }
-  }, []);
   return (
     <PageLayout data={{ path: "search" }} templateData={{ __meta, document }}>
       <SearchInner />
@@ -55,7 +61,7 @@ export const SearchInner: React.FC = () => {
   // function which will be run when a search is executed
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    searchActions.setQuery(query);
+    searchActions.setQuery(query ?? "");
     searchActions.executeUniversalQuery();
     const queryParams = new URLSearchParams(window.location.search);
     if (query) {
@@ -67,7 +73,7 @@ export const SearchInner: React.FC = () => {
   };
 
   //hook to execute a search if necessary based on the query param in the url
-  React.useEffect(() => {
+  useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("query");
     if (query) {

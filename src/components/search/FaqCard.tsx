@@ -1,4 +1,3 @@
-import * as React from "react";
 import { CardComponent, CardProps } from "@yext/search-ui-react";
 import { C_faqs } from "../../types/autogen";
 import FAQ from "../FAQ";

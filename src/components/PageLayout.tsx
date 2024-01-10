@@ -1,4 +1,3 @@
-import * as React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import {
@@ -12,8 +11,7 @@ import {
   SearchHeadlessProvider,
   provideHeadless,
 } from "@yext/search-headless-react";
-import { getRuntime } from "@yext/pages/util";
-import i18n from "../i18n";
+import { initi18n } from "../i18n";
 
 export interface PageLayoutProps {
   children?: React.ReactNode;
@@ -22,22 +20,14 @@ export interface PageLayoutProps {
 }
 
 const PageLayout = ({ children, data, templateData }: PageLayoutProps) => {
-  // set locale based on the locale provided by the pages system
-  const runtime = getRuntime();
-  let locale = templateData.document?.meta?.locale;
-  if (locale !== "en") {
-    i18n.changeLanguage("de");
-  }
-  if (!runtime.isServerSide) {
-    const searchParams = new URLSearchParams(window?.location.search);
-    const localeParam = searchParams.get("lang");
-    locale = localeParam;
-  }
+  const locale = templateData.document.meta.locale;
+
+  initi18n(locale);
 
   const searchConfig: HeadlessConfig = {
     apiKey: "e3377abbf6e20d714caa16c4c4eb7007",
     experienceKey: "calvins-coffee-search",
-    locale: locale,
+    locale,
     experienceVersion: "STAGING",
     environment: Environment.SANDBOX,
   };

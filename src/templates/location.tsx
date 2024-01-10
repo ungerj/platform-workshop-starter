@@ -18,8 +18,6 @@ import FeaturedProducts from "../components/FeaturedProducts";
 import ImageCarousel from "../components/ImageCarousel";
 import Location from "../types/autogen";
 import BusinessSummary from "../components/BusinessSummary";
-import { useEffect } from "react";
-import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
 
 export const config: TemplateConfig = {
@@ -99,7 +97,6 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   };
 };
 
-// TODO: Typing
 const Location: Template<TemplateRenderProps<Location>> = ({
   __meta,
   document,
@@ -110,10 +107,7 @@ const Location: Template<TemplateRenderProps<Location>> = ({
     hours,
     mainPhone,
     description,
-    emails,
-    logo,
     photoGallery,
-    c_backgroundColor,
     c_featuredProducts,
     c_faqs,
     c_tagline,
@@ -122,14 +116,6 @@ const Location: Template<TemplateRenderProps<Location>> = ({
 
   const data = { locale: document.meta.locale };
   const { t } = useTranslation();
-
-  // you would usually derive the locale from the browser or user for hardcoded locales, but this example is for demo purposes
-  // you could also choose to store all the site copy in Yext Content and translate it there
-  useEffect(() => {
-    if (meta.locale !== "en") {
-      i18n.changeLanguage("de");
-    }
-  }, []);
 
   return (
     <>

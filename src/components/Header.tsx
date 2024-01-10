@@ -1,4 +1,3 @@
-import * as React from "react";
 import { SearchBar, onSearchFunc } from "@yext/search-ui-react";
 import { useTranslation } from "react-i18next";
 
@@ -12,10 +11,18 @@ export interface HeaderProps {
 const Header = ({ data }: HeaderProps) => {
   const { t } = useTranslation();
   const placeHolderText = t("Search...");
-  const locale = data?.locale;
   const handleSearch: onSearchFunc = (searchEventData) => {
     const { query } = searchEventData;
-    window.location.href = `/search?query=${query}&lang=${locale}`;
+    const currentPath = window.location.pathname;
+    // Ensure there's no trailing slash
+    const trimmedPath = currentPath.endsWith("/")
+      ? currentPath.slice(0, -1)
+      : currentPath;
+    // Construct the new URL
+    const newUrl = `${trimmedPath}/search?query=${encodeURIComponent(
+      query || ""
+    )}`;
+    window.location.href = newUrl;
   };
 
   return (
