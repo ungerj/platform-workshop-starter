@@ -1,14 +1,18 @@
+import { useTranslation } from "react-i18next";
+
 export interface AboutProps {
   description?: string;
 }
 
 const About = ({ description }: AboutProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="bg-gray-100 px-6 py-20 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            <a id="about">About Us</a>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <a id="about">{t("About Us")}</a>
           </h2>
           {description ? (
             <p className="mt-6 text-lg leading-8 text-gray-600">
