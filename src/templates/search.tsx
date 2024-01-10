@@ -15,6 +15,8 @@ import {
 } from "@yext/search-ui-react";
 import PageLayout from "../components/PageLayout";
 import { useSearchActions } from "@yext/search-headless-react";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 export const getPath: GetPath<TemplateProps> = () => {
   return "search";
@@ -31,6 +33,11 @@ export const getHeadConfig: GetHeadConfig<
 };
 
 const Search: Template<TemplateRenderProps> = ({ __meta, document }) => {
+  React.useEffect(() => {
+    if (document.meta.locale !== "en") {
+      i18n.changeLanguage("de");
+    }
+  }, []);
   return (
     <PageLayout data={{}} templateData={{ __meta, document }}>
       <SearchInner />
@@ -39,6 +46,8 @@ const Search: Template<TemplateRenderProps> = ({ __meta, document }) => {
 };
 
 export const SearchInner: React.FC = () => {
+  const { t } = useTranslation();
+
   const searchActions = useSearchActions();
   // function which will be run when a search is executed
   const handleSearch: onSearchFunc = (searchEventData) => {
@@ -56,7 +65,6 @@ export const SearchInner: React.FC = () => {
 
   //hook to execute a search if necessary based on the query param in the url
   React.useEffect(() => {
-    console.log("executing search");
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("query");
     if (query) {
@@ -65,10 +73,12 @@ export const SearchInner: React.FC = () => {
     }
   }, []);
 
+  const placeHolderText = t("Search...");
+
   return (
     <div className="px-4 py-8">
       <div className="mx-auto flex max-w-5xl flex-col">
-        {/* <SearchBar placeholder="Search..." onSearch={handleSearch} /> */}
+        <SearchBar placeholder={placeHolderText} onSearch={handleSearch} />
         <UniversalResults verticalConfigMap={{ faqs: { label: "FAQs" } }} />
       </div>
     </div>
